@@ -1,18 +1,16 @@
 swagger: '2.0'
 info:
-  version: '1.0.0'
-  title: API Gateway
-  x-ibm-name: api-gateway
+  version: 1.0.0
+  title: gateway-discovery
+  x-ibm-name: gateway-discovery-api
   contact:
-    name: API Support
-    url: https://example.com/support
-    email: support@example.com
+    name: gateway-discovery
 basePath: /
 x-ibm-configuration:
   properties:
     target-url:
-      value: https://jsonplaceholder.typicode.com
-      description: Target URL for the API
+      value: https://catfact.ninja
+      description: url_description
       encoded: false
   cors:
     enabled: true
@@ -24,7 +22,7 @@ x-ibm-configuration:
   assembly:
     execute:
       - invoke:
-          title: Invoke
+          title: invoke
           version: 2.0.0
           verb: keep
           target-url: $(target-url)$(request.path)$(request.search)
@@ -40,12 +38,12 @@ x-ibm-configuration:
           persistent-connection: true
       - log:
           version: 2.1.0
-          title: Log
+          title: log
           log-level: default
           mode: gather-only
       - set-variable:
           version: 2.0.0
-          title: Set Variable
+          title: set-variable
           actions:
             - set: log.custom_data.discoveryServiceCollection
               value: 'true'
@@ -53,7 +51,7 @@ x-ibm-configuration:
           description: Setting specific collector key
       - set-variable:
           version: 2.0.0
-          title: Set Variable
+          title: set-variable
           actions:
             - set: log.custom_data.apiTargetURL
               value: $(target-url)
@@ -72,43 +70,13 @@ paths:
     get:
       responses:
         '200':
-          description: Successful response
-          schema:
-            type: string
-      consumes: []
-      produces: []
-    post:
-      responses:
-        '201':
-          description: Created
-          schema:
-            type: string
-      consumes: []
-      produces: []
-    put:
-      responses:
-        '201':
-          description: Created
-          schema:
-            type: string
-    patch:
-      responses:
-        '200':
-          description: Successful response
-          schema:
-            type: string
-      consumes: []
-      produces: []
-    delete:
-      responses:
-        '204':
-          description: No content
+          description: success
           schema:
             type: string
       consumes: []
       produces: []
     parameters:
-      - name: pathparam
+      - name: +pathparam
         in: path
         required: true
         type: string
